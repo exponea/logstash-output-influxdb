@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
 
-  s.name            = 'logstash-output-influxdb'
+  s.name            = 'logstash-output-influxdb-exponea'
   s.version         = '3.1.2'
   s.licenses        = ['Apache License (2.0)']
   s.summary         = "This output lets you output Metrics to InfluxDB"
