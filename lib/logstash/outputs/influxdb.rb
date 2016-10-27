@@ -234,9 +234,13 @@ class LogStash::Outputs::InfluxDB < LogStash::Outputs::Base
   # value will be run through event#sprintf with the exception of a non-String
   # value (which will be passed through)
   def create_point_from_event(event)
-    Hash[ (@use_event_fields_for_data_points ? event.to_hash : @data_points).map do |k,v| 
-      [event.sprintf(k), (String === v ? event.sprintf(v) : v)] 
-    end ]
+    if @use_event_fields_for_data_points
+      event.to_hash.clone
+    else
+      Hash[ @data_points.map do |k,v|
+        [event.sprintf(k), (String === v ? event.sprintf(v) : v)]
+      end ]
+    end
   end
   
 
