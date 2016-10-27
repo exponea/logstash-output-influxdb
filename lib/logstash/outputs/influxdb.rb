@@ -339,7 +339,15 @@ class LogStash::Outputs::InfluxDB < LogStash::Outputs::Base
 
   # Return a quoted string of the given value if it's not a number
   def quoted(value)
-    Numeric === value ? value : %Q|"#{value.gsub('"','\"')}"|
+    if Numeric === value || !!value == value
+      value
+    elsif value.is_a? String
+      %Q|"#{value.gsub('"','\"')}"|
+    else
+      @logger.warn("Trying to write unsupported value type to InfluxDB, coercing to string",
+                   :value => value)
+      %Q|"#{value.to_s.gsub('"','\"')}"|
+    end
   end
 
 
